@@ -2,7 +2,7 @@ Ubuntu Web Server - configuration steps | Ubuntu 22.04 LTS
 
 Part I - Install Ubuntu
 
-a) create an Admin account with Administrator priviliges
+a) create an Admin account with Administrator privileges
     --> open a terminal
     --> set a root password [sudo passwd root]
 b) switch to root
