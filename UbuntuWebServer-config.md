@@ -19,6 +19,7 @@ b) open terminal
 c) apt install apache2
 d) creating a simply website:
     --> mkdir /var/www/gci/
+        ---> cd /var/www/gci/
     --> nano index.html [insert here whatever you with html syntax or paste a code from tutorial site above]
         ---> press Ctrl + X , then 'y' to save the changes
 e) setting up a VirtualHost:
@@ -27,12 +28,14 @@ e) setting up a VirtualHost:
     --> nano gci.conf
     --> set an email to ServerAdmin [fictional]
     --> replace 'html' to 'gci' in DocumentRoot path
-    --> set an example of your website address [with gci. in the beginning] in ServerName like gci.example.com
+    --> uncomment and set an example of your website address [with gci. in the beginning] in ServerName like gci.example.com
         ---> press Ctrl + X , then 'y' to save the changes
 f) activating VirtualHost:
     --> a2ensite gci.conf
     --> service apache2 reload
     --> systemctl status apache2
+    --> nano /etc/hosts
+        ---> add server ip and website name here (example): 127.0.0.3   gci.example.com 
 g) type your host name in a browser to see the result
 
 helpful directory info:
@@ -73,7 +76,7 @@ e) ufw allow "Apache Full"
 1. Enabling - mod_ssl
     --> a2enmod ssl
     --> systemctl restart apache2
-it is now ready to use
+(it is now ready to use)
 
 2. Creating the SSL Certificate
     --> openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/apache-selfsigned.key -out /etc/ssl/certs/apache-selfsigned.crt
@@ -93,11 +96,11 @@ it is now ready to use
         SSLCertificateFile /etc/ssl/certs/apache-selfsigned.crt
         SSLCertificateKeyFile /etc/ssl/private/apache-selfsigned.key
     
-    --> save it
     --> replace the port inside VirtualHost to 443
 
         <VirtualHost *:80> === <VirtualHost *:443>
 
+    --> save it
     --> apache2ctl configtest [to be sure that apache syntax is OK]
         ---> systemctl reload apache2
         ---> systemctl status apache2
@@ -124,7 +127,7 @@ helpful directory info:
     --> /etc/ssl/private/ - keys stored
     --> /etc/ssl/certs/ - certificate stored ---> ll /etc/ssl/certs/apache-selfsigned.crt (check if exists)
 
-Part V - Installing PHP on Ubuntu | PHP 8.2 
+Part V - Installing PHP on Ubuntu | PHP 8.2 | PHP 8.1
     based on https://www.liquidweb.com/kb/install-php-on-ubuntu/ | copy the link to get more info
 
 a) log into Admin account
@@ -182,7 +185,7 @@ d) apt-get update & apt-get upgrade -y [if it needs]
 1. Install MariaDB
     --> apt install mariadb-server mariadb-client
 
-2. Configure MariaDB
+2. Configure MariaDB with secure installation [which uses root as primary database user]|[optional]
     --> mysql_secure_installation
     [proceed with steps during configuration]
         ---> Switch to unix_socket authentication - n
@@ -208,8 +211,8 @@ d) apt-get update & apt-get upgrade -y [if it needs]
 1. Create WordPress Database
     --> mysql -u root -p [enter your root password]
     --> CREATE DATABASE wordpress_db;
-    --> CREATE USER '<chosen_name>'@'<ip_host>' IDENTIFIED BY 'password';
-    --> GRANT ALL ON wordpress_db.* TO '<chosen_name>'@'<ip_host>' IDENTIFIED BY 'password';
+    --> CREATE USER '<chosen_name>'@'<ip_host>' IDENTIFIED BY '<chosen_password>';
+    --> GRANT ALL ON wordpress_db.* TO '<chosen_name>'@'<ip_host>' IDENTIFIED BY '<chosen_password>';
     --> FLUSH PRIVILEGES;
     --> exit
 
